@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Pixel Braid Studio: salão de tranças com estética geek, pixel, kawaii e gamer."
+    />
+    <title>Pixel Braid Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label="Pixel Braid Studio">
+        <span class="brand-mark">PB</span>
+        <span>Pixel Braid Studio</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Menu principal">
+        <a href="#catalogo">Catálogo</a>
+        <a href="#motivos">Por que escolher</a>
+        <a href="#agendamento">Agendar</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="inicio" class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">Tranças, pixels e autoestima</p>
+          <h1>Pixel Braid Studio</h1>
+          <p>
+            Um salão de tranças com energia gamer, toque kawaii e acabamento
+            pensado para você sair brilhando em qualquer fase.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#agendamento">Agendar agora</a>
+            <a class="button secondary" href="#catalogo">Ver estilos</a>
+          </div>
+        </div>
+
+        <div class="pixel-card" aria-label="Mascote do Pixel Braid Studio">
+          <div class="mascot" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <p>Power-up de trança desbloqueado</p>
+        </div>
+      </section>
+
+      <section id="catalogo" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Catálogo</p>
+          <h2>Escolha sua próxima transformação</h2>
+        </div>
+
+        <div class="catalog-grid">
+          <article class="service-card">
+            <div class="service-art box-braids"></div>
+            <h3>Box braids</h3>
+            <p>Volume, proteção e muito estilo para uma rotina cheia.</p>
+            <strong>A partir de R$ 180</strong>
+          </article>
+
+          <article class="service-card">
+            <div class="service-art nagô"></div>
+            <h3>Trança nagô</h3>
+            <p>Desenhos marcantes, acabamento firme e visual poderoso.</p>
+            <strong>A partir de R$ 90</strong>
+          </article>
+
+          <article class="service-card">
+            <div class="service-art jumbo"></div>
+            <h3>Jumbo colorido</h3>
+            <p>Cores vibrantes para quem quer entrar no modo protagonista.</p>
+            <strong>A partir de R$ 220</strong>
+          </article>
+
+          <article class="service-card">
+            <div class="service-art twists"></div>
+            <h3>Twists</h3>
+            <p>Leveza, movimento e um visual fofo com acabamento delicado.</p>
+            <strong>A partir de R$ 160</strong>
+          </article>
+        </div>
+      </section>
+
+      <section id="motivos" class="section reasons-section">
+        <div class="section-heading">
+          <p class="eyebrow">Por que escolher</p>
+          <h2>Beleza com cuidado de personagem principal</h2>
+        </div>
+
+        <div class="reason-grid">
+          <article>
+            <span class="pixel-icon">01</span>
+            <h3>Atendimento acolhedor</h3>
+            <p>Escuta real sobre seu cabelo, sua rotina e o estilo que combina com você.</p>
+          </article>
+
+          <article>
+            <span class="pixel-icon">02</span>
+            <h3>Acabamento caprichado</h3>
+            <p>Divisões limpas, fixação confortável e orientação de manutenção.</p>
+          </article>
+
+          <article>
+            <span class="pixel-icon">03</span>
+            <h3>Visual geek kawaii</h3>
+            <p>Um espaço divertido, fotogênico e feito para quem ama estética pop.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="agendamento" class="section booking-section">
+        <div class="booking-copy">
+          <p class="eyebrow">Agendamento</p>
+          <h2>Reserve seu horário</h2>
+          <p>
+            Preencha os dados e confirme pelo WhatsApp. Seu pedido também será
+            salvo no Supabase para acompanhamento.
+          </p>
+        </div>
+
+        <form class="booking-form" id="bookingForm" novalidate>
+          <label>
+            Nome completo
+            <input id="nome_cliente" name="nome_cliente" type="text" autocomplete="name" required />
+          </label>
+
+          <label>
+            WhatsApp
+            <input
+              id="telefone"
+              name="telefone"
+              type="tel"
+              inputmode="tel"
+              autocomplete="tel"
+              placeholder="(11) 99999-9999"
+              required
+            />
+          </label>
+
+          <label>
+            Serviço
+            <select id="servico" name="servico" required>
+              <option value="">Selecione uma opção</option>
+              <option value="Box braids">Box braids</option>
+              <option value="Trança nagô">Trança nagô</option>
+              <option value="Jumbo colorido">Jumbo colorido</option>
+              <option value="Twists">Twists</option>
+              <option value="Manutenção">Manutenção</option>
+            </select>
+          </label>
+
+          <div class="form-row">
+            <label>
+              Data
+              <input id="data" name="data" type="date" required />
+            </label>
+
+            <label>
+              Horário
+              <input id="horario" name="horario" type="time" required />
+            </label>
+          </div>
+
+          <label>
+            Observações
+            <textarea
+              id="observacoes"
+              name="observacoes"
+              rows="4"
+              placeholder="Conte se deseja cor, tamanho, referência ou alguma necessidade especial."
+            ></textarea>
+          </label>
+
+          <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
+          <button class="button primary submit-button" type="submit">Confirmar agendamento</button>
+        </form>
+      </section>
+    </main>
+
+    <button class="help-button" id="helpButton" type="button" aria-label="Abrir ajuda">
+      <span class="help-mascot" aria-hidden="true">?</span>
+      <span>Ajuda</span>
+    </button>
+
+    <aside class="help-panel" id="helpPanel" aria-hidden="true">
+      <button class="help-close" id="helpClose" type="button" aria-label="Fechar ajuda">x</button>
+      <strong>Pixel Assist</strong>
+      <p>
+        Precisa escolher uma trança? Veja o catálogo, preencha o agendamento e
+        confirme tudo pelo WhatsApp.
+      </p>
+      <a class="button secondary" href="#agendamento">Ir para o formulário</a>
+    </aside>
+
+    <footer class="site-footer">
+      <p>Pixel Braid Studio - tranças com estética geek, pixel e kawaii.</p>
+    </footer>
+  </body>
+</html>
