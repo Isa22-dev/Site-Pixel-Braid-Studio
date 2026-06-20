@@ -1,6 +1,6 @@
 # Pixel Braid Studio
 
-Site estático em HTML, CSS e JavaScript puro para um salão de tranças com estética geek, gamer, pixel art, kawaii e cultura pop. O projeto inclui catálogo, galeria com lightbox, modal de ajuda com mascote, depoimentos, formulário de agendamento, integração Supabase e redirecionamento para WhatsApp.
+Site estático em HTML, CSS e JavaScript puro para um salão de tranças com estética geek, gamer, pixel art, kawaii e cultura pop. O projeto inclui catálogo, galeria com lightbox, modal de ajuda com mascote, formulário de agendamento, integração Supabase e redirecionamento para WhatsApp.
 
 ## Estrutura
 
