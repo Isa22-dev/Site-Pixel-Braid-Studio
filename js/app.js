@@ -45,6 +45,15 @@ document.addEventListener("click", (event) => {
   serviceSelect.focus({ preventScroll: true });
 });
 
+document.addEventListener("click", (event) => {
+  const button = event.target.closest(".subscription-button");
+  if (!button) return;
+
+  const planName = button.dataset.plan;
+  const message = `Olá! Tenho interesse no Plano ${planName} de Tranças por Assinatura do Pixel Braid Studio. Gostaria de saber mais informações.`;
+  window.location.href = buildPlainWhatsAppUrl(message);
+});
+
 mascotButton.addEventListener("click", () => openModal(assistantModal));
 assistantClose.addEventListener("click", () => closeModal(assistantModal));
 assistantModal.addEventListener("click", (event) => {
