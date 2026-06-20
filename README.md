@@ -141,4 +141,4 @@ git push
 
 ## Mascote
 
-O arquivo atual fica em `assets/mascote/mascote.svg` e tem fundo transparente. Para usar a mascote oficial, substitua esse arquivo mantendo o mesmo nome ou atualize os caminhos no `index.html`.
+O arquivo atual fica em `assets/mascote/mascote.png` e tem fundo transparente. Para trocar a mascote, substitua esse arquivo mantendo o mesmo nome ou atualize os caminhos no `index.html`.
