@@ -79,7 +79,8 @@ button { color: inherit; }
 
 .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 900; }
 
-.brand-badge {
+.brand-badge,
+.brand-pixel-p {
   display: grid;
   width: 46px;
   height: 46px;
@@ -90,6 +91,40 @@ button { color: inherit; }
   box-shadow: 4px 4px 0 rgba(39, 16, 79, 0.28);
   font-family: "Press Start 2P", monospace;
   font-size: 0.7rem;
+}
+
+.brand-logo {
+  gap: 9px;
+}
+
+.brand-pixel-p {
+  width: 42px;
+  height: 42px;
+  background: var(--blush);
+  color: var(--header);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.brand-word {
+  display: grid;
+  gap: 0;
+  line-height: 1;
+}
+
+.brand-modern {
+  color: var(--white);
+  font-size: 1.32rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.brand-premium {
+  margin-top: 3px;
+  color: var(--blush);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.8px;
 }
 
 .brand-text { max-width: 230px; }
@@ -398,6 +433,8 @@ input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 4px rgba(255, 98, 
 
 @media (max-width: 425px) {
   .brand-text { max-width: 174px; }
+  .brand-modern { font-size: 1.12rem; }
+  .brand-premium { font-size: 0.72rem; }
   .hero-actions .button, .assistant-actions .button { width: 100%; }
   .mascot-button { right: 10px; bottom: 10px; width: 78px; height: 100px; }
   .assistant-card { padding: 22px 16px; }
