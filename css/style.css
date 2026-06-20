@@ -195,39 +195,41 @@ button { color: inherit; }
 }
 
 .brand-logo {
-  gap: 9px;
+  gap: 7px;
   position: relative;
+  align-items: center;
   animation: softGlitch 9s steps(1, end) infinite;
 }
 
 .brand-pixel-p {
-  width: 42px;
-  height: 42px;
-  background: var(--blush);
+  width: 40px;
+  height: 40px;
+  background: var(--white);
   color: var(--header);
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1;
 }
 
 .brand-word {
   display: grid;
-  gap: 0;
+  gap: 2px;
   line-height: 1;
 }
 
 .brand-modern {
   color: var(--white);
-  font-size: 1.32rem;
+  font-size: 1.28rem;
   font-weight: 800;
   letter-spacing: 0;
 }
 
 .brand-premium {
-  margin-top: 3px;
+  margin-top: 0;
   color: var(--blush);
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.8px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.45px;
+  opacity: 0.92;
 }
 
 .brand-text { max-width: 230px; }
@@ -275,7 +277,7 @@ button { color: inherit; }
 }
 
 .hero-logo {
-  width: min(360px, 82vw);
+  width: min(410px, 86vw);
   margin-bottom: 20px;
   filter: drop-shadow(6px 6px 0 rgba(82, 33, 150, 0.26));
 }
@@ -628,8 +630,9 @@ input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 4px rgba(255, 98, 
 
 @media (max-width: 425px) {
   .brand-text { max-width: 174px; }
-  .brand-modern { font-size: 1.12rem; }
-  .brand-premium { font-size: 0.72rem; }
+  .brand-pixel-p { width: 36px; height: 36px; font-size: 0.82rem; }
+  .brand-modern { font-size: 1.08rem; }
+  .brand-premium { font-size: 0.68rem; }
   .hero-actions .button, .assistant-actions .button { width: 100%; }
   .mascot-button { right: 10px; bottom: 10px; width: 78px; height: 100px; }
   .assistant-card { padding: 22px 16px; }
@@ -675,7 +678,7 @@ input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 4px rgba(255, 98, 
   }
 
   .hero-logo {
-    width: 390px;
+    width: 430px;
   }
 
   .content-section {
