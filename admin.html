@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#CD2382" />
+    <title>Admin | Pixel Braid Studio</title>
+    <link rel="icon" href="assets/icones/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="js/supabase.js"></script>
+    <script defer src="js/admin.js"></script>
+  </head>
+  <body class="admin-page">
+    <div class="magic-bg" aria-hidden="true">
+      <span class="bg-sprite bg-heart s1"></span>
+      <span class="bg-sprite bg-star s2"></span>
+      <span class="bg-sprite bg-pixel s3"></span>
+      <span class="bg-sprite bg-crystal s4"></span>
+      <span class="bg-sprite bg-spark s5"></span>
+      <span class="bg-sprite bg-block s7"></span>
+    </div>
+
+    <main class="admin-shell">
+      <section class="admin-login admin-panel" id="loginPanel">
+        <a class="brand brand-logo admin-brand" href="index.html" aria-label="Pixel Braid Studio"><span class="brand-pixel-p">P</span><span class="brand-word"><span><span class="brand-modern">ixel</span></span><span class="brand-premium">Braid Studio</span></span></a>
+        <div class="admin-heading">
+          <p class="eyebrow">Painel administrativo</p>
+          <h1>Entrar no catálogo</h1>
+          <p>Use seu usuário do Supabase Auth para gerenciar modelos, imagens e valores.</p>
+        </div>
+        <form class="admin-form" id="loginForm">
+          <label>E-mail<input id="adminEmail" type="email" autocomplete="email" required /></label>
+          <label>Senha<input id="adminPassword" type="password" autocomplete="current-password" required /></label>
+          <p class="form-message" id="loginMessage" role="status" aria-live="polite"></p>
+          <button class="button button-primary" type="submit">Entrar</button>
+        </form>
+      </section>
+
+      <section class="admin-dashboard" id="adminDashboard" hidden>
+        <header class="admin-topbar admin-panel">
+          <div>
+            <p class="eyebrow">Catálogo editável</p>
+            <h1>Pixel Braid Studio</h1>
+          </div>
+          <div class="admin-actions">
+            <a class="button button-secondary" href="index.html">Ver site</a>
+            <button class="button button-primary" id="logoutButton" type="button">Sair</button>
+          </div>
+        </header>
+
+        <div class="admin-layout">
+          <form class="admin-form admin-panel" id="catalogForm">
+            <input id="catalogId" type="hidden" />
+            <div class="admin-heading">
+              <p class="eyebrow">Item do catálogo</p>
+              <h2 id="formTitle">Nova trança</h2>
+            </div>
+            <label>Nome<input id="catalogNome" type="text" required /></label>
+            <label>Descrição<textarea id="catalogDescricao" rows="4"></textarea></label>
+            <div class="form-row">
+              <label>Preço<input id="catalogPreco" type="text" placeholder="R$ 220" /></label>
+              <label>Tempo médio<input id="catalogTempo" type="text" placeholder="5h a 7h" /></label>
+            </div>
+            <label>Categoria<input id="catalogCategoria" type="text" placeholder="Box braids, nagô, twists..." /></label>
+            <label>Imagem por URL<input id="catalogImagemUrl" type="url" placeholder="https://..." /></label>
+            <label>Upload para Storage<input id="catalogImagemFile" type="file" accept="image/*" /></label>
+            <label class="admin-check"><input id="catalogAtivo" type="checkbox" checked /> <span>Mostrar no catálogo público</span></label>
+            <p class="form-message" id="catalogMessage" role="status" aria-live="polite"></p>
+            <div class="admin-form-actions">
+              <button class="button button-primary" id="saveCatalogButton" type="submit">Salvar trança</button>
+              <button class="button button-secondary" id="clearFormButton" type="button">Limpar</button>
+            </div>
+          </form>
+
+          <section class="admin-panel catalog-manager">
+            <div class="admin-heading">
+              <p class="eyebrow">Itens cadastrados</p>
+              <h2>Catálogo</h2>
+            </div>
+            <div class="admin-list" id="adminCatalogList" aria-live="polite"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

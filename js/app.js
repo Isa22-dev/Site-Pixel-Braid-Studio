@@ -31,12 +31,18 @@ mainNav.addEventListener("click", (event) => {
   }
 });
 
-document.querySelectorAll(".service-select").forEach((button) => {
-  button.addEventListener("click", () => {
-    serviceSelect.value = button.dataset.service;
-    document.querySelector("#agendamento").scrollIntoView({ behavior: "smooth" });
-    serviceSelect.focus({ preventScroll: true });
-  });
+document.addEventListener("click", (event) => {
+  const button = event.target.closest(".service-select");
+  if (!button) return;
+
+  const serviceName = button.dataset.service;
+  if (serviceName) {
+    ensureServiceOption(serviceName);
+    serviceSelect.value = serviceName;
+  }
+
+  document.querySelector("#agendamento").scrollIntoView({ behavior: "smooth" });
+  serviceSelect.focus({ preventScroll: true });
 });
 
 mascotButton.addEventListener("click", () => openModal(assistantModal));
@@ -120,6 +126,19 @@ const observer = new IntersectionObserver(
 );
 
 document.querySelectorAll(".section-reveal, .reveal-card").forEach((element) => observer.observe(element));
+
+window.PixelBraidReveal = {
+  observe(element) {
+    observer.observe(element);
+  },
+};
+
+function ensureServiceOption(serviceName) {
+  const exists = Array.from(serviceSelect.options).some((option) => option.value === serviceName);
+  if (exists) return;
+
+  serviceSelect.append(new Option(serviceName, serviceName));
+}
 
 function getBookingData() {
   const formData = new FormData(form);

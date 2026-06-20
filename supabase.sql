@@ -18,3 +18,107 @@ on public.agendamentos
 for insert
 to anon
 with check (true);
+
+create extension if not exists pgcrypto;
+
+create table if not exists public.catalogo_trancas (
+  id uuid primary key default gen_random_uuid(),
+  nome text not null,
+  descricao text,
+  preco text,
+  tempo text,
+  imagem_url text,
+  categoria text,
+  ativo boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+alter table public.catalogo_trancas enable row level security;
+
+drop policy if exists "Clientes visualizam trancas ativas" on public.catalogo_trancas;
+drop policy if exists "Admins autenticados visualizam catalogo" on public.catalogo_trancas;
+drop policy if exists "Admins autenticados criam catalogo" on public.catalogo_trancas;
+drop policy if exists "Admins autenticados editam catalogo" on public.catalogo_trancas;
+drop policy if exists "Admins autenticados excluem catalogo" on public.catalogo_trancas;
+
+create policy "Clientes visualizam trancas ativas"
+on public.catalogo_trancas
+for select
+to anon
+using (ativo = true);
+
+create policy "Admins autenticados visualizam catalogo"
+on public.catalogo_trancas
+for select
+to authenticated
+using (true);
+
+create policy "Admins autenticados criam catalogo"
+on public.catalogo_trancas
+for insert
+to authenticated
+with check (true);
+
+create policy "Admins autenticados editam catalogo"
+on public.catalogo_trancas
+for update
+to authenticated
+using (true)
+with check (true);
+
+create policy "Admins autenticados excluem catalogo"
+on public.catalogo_trancas
+for delete
+to authenticated
+using (true);
+
+insert into public.catalogo_trancas (nome, descricao, preco, tempo, imagem_url, categoria, ativo)
+select *
+from (
+values
+  ('Box Braids Longas', 'Tranças longas, versáteis e marcantes para um visual poderoso.', 'R$ 220', '5h a 7h', 'assets/imagens/box-braids.svg', 'Box braids', true),
+  ('Knotless Braids', 'Leves na raiz, naturais e confortáveis para usar todos os dias.', 'R$ 260', '6h a 8h', 'assets/imagens/knotless.svg', 'Box braids', true),
+  ('Goddess Braids', 'Tranças com cachos soltos para um acabamento glamouroso.', 'R$ 290', '6h a 8h', 'assets/imagens/goddess.svg', 'Goddess', true),
+  ('Nagô', 'Desenhos geométricos, acabamento firme e muita presença.', 'R$ 120', '2h a 4h', 'assets/imagens/nago.svg', 'Nagô', true),
+  ('Twists', 'Leveza, movimento e uma estética moderna com toque fofo.', 'R$ 190', '4h a 6h', 'assets/imagens/twists.svg', 'Twists', true),
+  ('Fulani Braids', 'Mix de tranças frontais, detalhes estilosos e acabamento fashion.', 'R$ 240', '5h a 7h', 'assets/imagens/fulani.svg', 'Fulani', true)
+) as seed(nome, descricao, preco, tempo, imagem_url, categoria, ativo)
+where not exists (
+  select 1
+  from public.catalogo_trancas existing
+  where existing.nome = seed.nome
+);
+
+insert into storage.buckets (id, name, public)
+values ('catalogo', 'catalogo', true)
+on conflict (id) do update set public = true;
+
+drop policy if exists "Imagens do catalogo publicas" on storage.objects;
+drop policy if exists "Admins enviam imagens do catalogo" on storage.objects;
+drop policy if exists "Admins atualizam imagens do catalogo" on storage.objects;
+drop policy if exists "Admins removem imagens do catalogo" on storage.objects;
+
+create policy "Imagens do catalogo publicas"
+on storage.objects
+for select
+to anon, authenticated
+using (bucket_id = 'catalogo');
+
+create policy "Admins enviam imagens do catalogo"
+on storage.objects
+for insert
+to authenticated
+with check (bucket_id = 'catalogo');
+
+create policy "Admins atualizam imagens do catalogo"
+on storage.objects
+for update
+to authenticated
+using (bucket_id = 'catalogo')
+with check (bucket_id = 'catalogo');
+
+create policy "Admins removem imagens do catalogo"
+on storage.objects
+for delete
+to authenticated
+using (bucket_id = 'catalogo');

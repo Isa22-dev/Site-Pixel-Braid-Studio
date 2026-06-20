@@ -7,10 +7,13 @@ Site estático em HTML, CSS e JavaScript puro para um salão de tranças com est
 ```text
 /
 ├── index.html
+├── admin.html
 ├── css/
 │   └── style.css
 ├── js/
 │   ├── app.js
+│   ├── admin.js
+│   ├── catalogo.js
 │   └── supabase.js
 ├── assets/
 │   ├── imagens/
@@ -43,6 +46,54 @@ created_at
 ```
 
 Ele também ativa RLS e recria a política de insert para a chave pública `anon`.
+
+O mesmo SQL também cria:
+
+- `public.catalogo_trancas`, usada pelo catálogo editável.
+- Bucket público `catalogo` no Supabase Storage.
+- Políticas RLS para clientes visualizarem somente tranças ativas.
+- Políticas RLS para usuários autenticados criarem, editarem e excluírem itens.
+- Seis itens iniciais do catálogo: Box Braids Longas, Knotless Braids, Goddess Braids, Nagô, Twists e Fulani Braids.
+
+Campos da tabela `catalogo_trancas`:
+
+```sql
+id
+nome
+descricao
+preco
+tempo
+imagem_url
+categoria
+ativo
+created_at
+```
+
+## Admin
+
+O painel fica em:
+
+```text
+/admin.html
+```
+
+Para criar o usuário administrador:
+
+1. No Supabase, abra `Authentication > Users`.
+2. Clique em `Add user`.
+3. Informe e-mail e senha.
+4. Use esse login em `admin.html`.
+
+No painel você pode:
+
+- Cadastrar nova trança.
+- Editar nome, descrição, preço, tempo médio, categoria e imagem.
+- Enviar imagem para o bucket `catalogo`.
+- Usar uma imagem por URL.
+- Ativar/desativar item do catálogo público.
+- Excluir item.
+
+Clientes não acessam o painel sem login. A página pública busca somente registros com `ativo = true`.
 
 ## Chaves
 
@@ -87,6 +138,12 @@ Acesse:
 http://localhost:3000
 ```
 
+Admin local:
+
+```text
+http://localhost:3000/admin.html
+```
+
 Com Node instalado, você também pode testar igual à Vercel:
 
 ```bash
@@ -113,12 +170,32 @@ from public.agendamentos
 order by created_at desc;
 ```
 
+## Como testar o catálogo editável
+
+1. Rode o SQL de `supabase.sql` no Supabase.
+2. Crie um usuário em `Authentication > Users`.
+3. Configure `SUPABASE_URL` e `SUPABASE_ANON_KEY`.
+4. Abra `/admin.html` e faça login.
+5. Cadastre ou edite uma trança.
+6. Abra `/index.html`.
+7. Confira se o card aparece com o mesmo layout estilo Instagram.
+8. Clique em `Agendar este estilo`.
+9. Confira se o campo `Serviço` foi preenchido automaticamente.
+
+Para conferir no banco:
+
+```sql
+select nome, preco, tempo, ativo, imagem_url
+from public.catalogo_trancas
+order by created_at desc;
+```
+
 ## GitHub
 
 O repositório já está configurado para:
 
 ```text
-https://github.com/Isa22-dev/Site_Pixel_Braid_Studio.git
+https://github.com/Isa22-dev/Site-Pixel-Braid-Studio.git
 ```
 
 Para enviar novas alterações:
