@@ -159,11 +159,14 @@ button { color: inherit; }
 
 .eyebrow {
   margin: 0 0 14px;
-  color: var(--yellow);
-  font-family: "Press Start 2P", monospace;
-  font-size: clamp(0.58rem, 1vw, 0.76rem);
-  line-height: 1.8;
-  text-shadow: 2px 2px 0 var(--primary);
+  color: var(--blush);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: clamp(0.78rem, 1.2vw, 0.95rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 rgba(82, 33, 150, 0.48);
 }
 
 .hero-logo {
@@ -177,22 +180,32 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 h1, h2 {
   margin: 0;
   color: var(--white);
-  font-family: "Press Start 2P", monospace;
-  line-height: 1.35;
-  text-shadow: 4px 4px 0 var(--primary);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.03;
+  text-shadow: 0 12px 34px rgba(82, 33, 150, 0.32);
 }
 
-h1 { max-width: 940px; font-size: clamp(2rem, 6.4vw, 4.85rem); }
-h2 { font-size: clamp(1.35rem, 3.4vw, 2.75rem); }
+h1 {
+  max-width: 980px;
+  font-size: clamp(2.65rem, 7vw, 6rem);
+}
+
+h2 {
+  max-width: 900px;
+  font-size: clamp(2rem, 4.4vw, 4.1rem);
+}
+
 h3 { margin: 0; color: var(--ink); font-size: 1.1rem; }
 
 .hero-copy > p:not(.eyebrow), .booking-copy p {
   max-width: 680px;
   color: var(--white);
   font-size: clamp(1rem, 1.8vw, 1.22rem);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.75;
-  text-shadow: 1px 1px 0 rgba(82, 33, 150, 0.6);
+  text-shadow: 0 8px 28px rgba(82, 33, 150, 0.28);
 }
 
 .hero-actions, .assistant-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
