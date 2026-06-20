@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 180" role="img" aria-labelledby="title">
+  <title id="title">Pixel Braid Studio</title>
+  <rect x="12" y="24" width="736" height="132" rx="0" fill="#FFE8F8" stroke="#522196" stroke-width="8"/>
+  <rect x="34" y="46" width="88" height="88" fill="#CD2382" stroke="#522196" stroke-width="6"/>
+  <rect x="50" y="62" width="20" height="56" fill="#FFE76C"/>
+  <rect x="74" y="62" width="20" height="56" fill="#5FBBEF"/>
+  <rect x="98" y="62" width="8" height="56" fill="#522196"/>
+  <text x="148" y="90" fill="#522196" font-family="'Press Start 2P', monospace" font-size="38">PIXEL BRAID</text>
+  <text x="152" y="130" fill="#CD2382" font-family="'Press Start 2P', monospace" font-size="22">STUDIO</text>
+  <path d="M676 50h18v18h18v18h-18v18h-18V86h-18V68h18z" fill="#5FBBEF"/>
+  <path d="M612 94h18v18h18v18h-18v18h-18v-18h-18v-18h18z" fill="#FF62BB"/>
+</svg>

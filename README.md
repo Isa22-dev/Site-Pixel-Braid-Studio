@@ -1,49 +1,57 @@
 # Pixel Braid Studio
 
-Site estático em HTML, CSS e JavaScript puro para um salão de tranças com estética geek, pixel, kawaii e gamer. O formulário de agendamento salva os dados no Supabase e depois redireciona a cliente para o WhatsApp com a mensagem preenchida.
+Site estático em HTML, CSS e JavaScript puro para um salão de tranças com estética geek, gamer, pixel art, kawaii e cultura pop. O projeto inclui catálogo, galeria com lightbox, modal de ajuda com mascote, depoimentos, formulário de agendamento, integração Supabase e redirecionamento para WhatsApp.
 
-## Arquivos do projeto
+## Estrutura
 
-- `index.html`: estrutura da página, catálogo, seção de motivos, mascote de ajuda e formulário.
-- `style.css`: visual responsivo com as cores do Pixel Braid Studio.
-- `script.js`: validação do formulário, conexão com Supabase e redirecionamento para WhatsApp.
-- `supabase.sql`: comando SQL para criar a tabela `agendamentos` e liberar inserts públicos com RLS.
-- `build-env.js`: gera a pasta `dist` e injeta variáveis de ambiente da Vercel no `script.js`.
-- `vercel.json`: configura o deploy da Vercel para publicar a pasta `dist`.
-
-## 1. Configurar o Supabase
-
-1. Acesse <https://supabase.com> e crie um projeto.
-2. No painel do projeto, abra `SQL Editor`.
-3. Crie uma nova query.
-4. Cole todo o conteúdo do arquivo `supabase.sql`.
-5. Clique em `Run`.
-
-O SQL cria a tabela:
-
-```sql
-public.agendamentos (
-  id,
-  nome_cliente,
-  telefone,
-  servico,
-  data,
-  horario,
-  observacoes,
-  created_at
-)
+```text
+/
+├── index.html
+├── css/
+│   └── style.css
+├── js/
+│   ├── app.js
+│   └── supabase.js
+├── assets/
+│   ├── imagens/
+│   ├── mascote/
+│   └── icones/
+├── supabase.sql
+├── build-env.js
+├── package.json
+└── vercel.json
 ```
 
-Ele também ativa RLS e recria uma política que permite apenas inserir novos agendamentos usando a chave pública `anon`.
+## Supabase
 
-## 2. Pegar as chaves do Supabase
+1. Acesse <https://supabase.com> e crie um projeto.
+2. Abra `SQL Editor`.
+3. Cole o conteúdo de `supabase.sql`.
+4. Clique em `Run`.
 
-1. No Supabase, abra `Project Settings`.
-2. Entre em `API`.
-3. Copie a `Project URL`.
-4. Copie a chave `anon public`.
+O SQL cria a tabela `public.agendamentos` com:
 
-Para testar rapidamente sem build, você pode abrir `script.js` e trocar:
+```sql
+id
+nome_cliente
+telefone
+servico
+data
+horario
+observacoes
+created_at
+```
+
+Ele também ativa RLS e recria a política de insert para a chave pública `anon`.
+
+## Chaves
+
+No Supabase, vá em `Project Settings > API` e copie:
+
+- `Project URL`
+- `anon public`
+
+Para teste local sem build, edite `js/supabase.js`:
 
 ```js
 const SUPABASE_URL = "COLE_AQUI_A_URL_DO_SUPABASE";
@@ -51,19 +59,11 @@ const SUPABASE_ANON_KEY = "COLE_AQUI_A_CHAVE_ANON_PUBLIC";
 const WHATSAPP_NUMBER = "5511999999999";
 ```
 
-Use seu número do WhatsApp no formato internacional, apenas números. Exemplo para Brasil:
+Use o WhatsApp no formato internacional, apenas números. Nunca use a `service_role key` no front-end.
 
-```js
-const WHATSAPP_NUMBER = "5511999999999";
-```
+## Variáveis na Vercel
 
-Importante: a chave `anon public` é feita para uso no navegador, mas a segurança depende das políticas RLS no Supabase. Nunca coloque a `service_role key` no front-end.
-
-## 3. Usar variáveis de ambiente na Vercel
-
-O projeto já tem um build simples para usar variáveis de ambiente sem salvar as chaves no GitHub.
-
-Na Vercel, crie estas variáveis em `Project Settings > Environment Variables`:
+Configure em `Project Settings > Environment Variables`:
 
 ```text
 SUPABASE_URL
@@ -71,31 +71,23 @@ SUPABASE_ANON_KEY
 WHATSAPP_NUMBER
 ```
 
-Exemplo:
+O build command `npm run build` roda `build-env.js`, copia o site para `dist/` e injeta as variáveis em `dist/js/supabase.js`.
 
-```text
-SUPABASE_URL=https://xxxxxxxx.supabase.co
-SUPABASE_ANON_KEY=sua-chave-anon-public
-WHATSAPP_NUMBER=5511999999999
-```
+## Testar localmente
 
-Durante o deploy, o arquivo `build-env.js` cria a pasta `dist` e troca os valores no `script.js` publicado.
-
-## 4. Testar localmente
-
-Você pode abrir o arquivo `index.html` no navegador. Se preferir testar com um servidor local:
+Abra o projeto com servidor local:
 
 ```bash
 python -m http.server 3000
 ```
 
-Depois acesse:
+Acesse:
 
 ```text
 http://localhost:3000
 ```
 
-Se você tiver Node instalado e quiser testar o mesmo fluxo da Vercel:
+Com Node instalado, você também pode testar igual à Vercel:
 
 ```bash
 $env:SUPABASE_URL="https://xxxxxxxx.supabase.co"
@@ -105,29 +97,15 @@ npm run build
 python -m http.server 3000 -d dist
 ```
 
-Teste o formulário preenchendo:
+## Como testar o agendamento
 
-- Nome completo
-- WhatsApp
-- Serviço
-- Data
-- Horário
+1. Preencha nome, telefone, serviço, data e horário.
+2. Envie o formulário.
+3. O site deve validar os campos, salvar no Supabase e abrir o WhatsApp.
+4. No Supabase, abra `Table Editor > agendamentos`.
+5. Confira se apareceu uma nova linha.
 
-Ao enviar, o site deve:
-
-1. validar os campos obrigatórios;
-2. salvar em `public.agendamentos`;
-3. mostrar mensagem de sucesso;
-4. abrir o WhatsApp com a mensagem automática.
-
-## 5. Conferir se salvou no Supabase
-
-1. Abra o painel do Supabase.
-2. Entre em `Table Editor`.
-3. Selecione a tabela `agendamentos`.
-4. Confira se apareceu uma nova linha com os dados enviados pelo formulário.
-
-Também é possível conferir pelo `SQL Editor`:
+Consulta opcional:
 
 ```sql
 select *
@@ -135,41 +113,32 @@ from public.agendamentos
 order by created_at desc;
 ```
 
-## 6. Subir para o GitHub
+## GitHub
 
-No terminal, dentro da pasta do projeto:
+O repositório já está configurado para:
+
+```text
+https://github.com/Isa22-dev/Site_Pixel_Braid_Studio.git
+```
+
+Para enviar novas alterações:
 
 ```bash
-git init
 git add .
-git commit -m "Create Pixel Braid Studio site"
+git commit -m "Improve Pixel Braid Studio interface"
+git push
 ```
 
-Crie um repositório vazio no GitHub e conecte:
-
-```bash
-git branch -M main
-git remote add origin https://github.com/SEU_USUARIO/pixel-braid-studio.git
-git push -u origin main
-```
-
-## 7. Deploy na Vercel
+## Vercel
 
 1. Acesse <https://vercel.com>.
-2. Clique em `Add New Project`.
-3. Importe o repositório do GitHub.
-4. Como é um site estático, deixe o framework como `Other`.
-5. Confira se o build command está como `npm run build`.
-6. Confira se o output directory está como `dist`.
-7. Configure as variáveis `SUPABASE_URL`, `SUPABASE_ANON_KEY` e `WHATSAPP_NUMBER`.
-8. Clique em `Deploy`.
+2. Importe o repositório do GitHub.
+3. Framework: `Other`.
+4. Build command: `npm run build`.
+5. Output directory: `dist`.
+6. Configure `SUPABASE_URL`, `SUPABASE_ANON_KEY` e `WHATSAPP_NUMBER`.
+7. Clique em `Deploy`.
 
-## 8. Checklist final
+## Mascote
 
-- A tabela `agendamentos` existe no Supabase.
-- A política RLS de insert para `anon` foi criada.
-- `SUPABASE_URL` foi trocada no `script.js`.
-- `SUPABASE_ANON_KEY` foi trocada no `script.js`.
-- `WHATSAPP_NUMBER` foi trocado no `script.js`.
-- Um agendamento de teste aparece no `Table Editor`.
-- O WhatsApp abre com os dados preenchidos.
+O arquivo atual fica em `assets/mascote/mascote.svg` e tem fundo transparente. Para usar a mascote oficial, substitua esse arquivo mantendo o mesmo nome ou atualize os caminhos no `index.html`.

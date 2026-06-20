@@ -3,19 +3,19 @@ const path = require("path");
 
 const root = __dirname;
 const dist = path.join(root, "dist");
-const filesToCopy = ["index.html", "style.css", "script.js", "supabase.sql", "README.md"];
+const entriesToCopy = ["index.html", "css", "js", "assets", "supabase.sql", "README.md"];
 
 fs.rmSync(dist, { recursive: true, force: true });
 fs.mkdirSync(dist, { recursive: true });
 
-for (const file of filesToCopy) {
-  fs.copyFileSync(path.join(root, file), path.join(dist, file));
+for (const entry of entriesToCopy) {
+  fs.cpSync(path.join(root, entry), path.join(dist, entry), { recursive: true });
 }
 
-const scriptPath = path.join(dist, "script.js");
-let script = fs.readFileSync(scriptPath, "utf8");
+const supabasePath = path.join(dist, "js", "supabase.js");
+let supabaseConfig = fs.readFileSync(supabasePath, "utf8");
 
-script = script
+supabaseConfig = supabaseConfig
   .replace("COLE_AQUI_A_URL_DO_SUPABASE", process.env.SUPABASE_URL || "COLE_AQUI_A_URL_DO_SUPABASE")
   .replace(
     "COLE_AQUI_A_CHAVE_ANON_PUBLIC",
@@ -23,6 +23,6 @@ script = script
   )
   .replace("5511999999999", process.env.WHATSAPP_NUMBER || "5511999999999");
 
-fs.writeFileSync(scriptPath, script);
+fs.writeFileSync(supabasePath, supabaseConfig);
 
 console.log("Build finalizado em dist/.");
