@@ -1,7 +1,4 @@
 const config = window.PixelBraidConfig;
-const form = document.querySelector("#bookingForm");
-const formMessage = document.querySelector("#formMessage");
-const submitButton = form.querySelector(".submit-button");
 const serviceSelect = document.querySelector("#servico");
 const dateInput = document.querySelector("#data");
 const navToggle = document.querySelector(".nav-toggle");
@@ -15,7 +12,7 @@ const lightbox = document.querySelector("#lightbox");
 const lightboxImage = document.querySelector("#lightboxImage");
 const lightboxClose = document.querySelector("#lightboxClose");
 
-dateInput.min = new Date().toISOString().split("T")[0];
+if (dateInput) dateInput.min = new Date().toISOString().split("T")[0];
 assistantWhatsApp.href = buildPlainWhatsAppUrl("Olá! Quero falar com o Pixel Braid Studio.");
 footerWhatsApp.href = buildPlainWhatsAppUrl("Olá! Quero saber mais sobre os agendamentos.");
 
@@ -83,45 +80,6 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  clearMessage();
-
-  if (!form.checkValidity()) {
-    form.reportValidity();
-    showMessage("Preencha todos os campos obrigatórios para continuar.", "error");
-    return;
-  }
-
-  if (!config.supabaseClient) {
-    showMessage("Configure SUPABASE_URL e SUPABASE_ANON_KEY em js/supabase.js ou na Vercel.", "error");
-    return;
-  }
-
-  const booking = getBookingData();
-  submitButton.disabled = true;
-  submitButton.textContent = "Salvando...";
-
-  try {
-    const { error } = await config.supabaseClient.from("agendamentos").insert([booking]);
-    if (error) throw error;
-
-    showMessage("Agendamento salvo com sucesso. Abrindo WhatsApp...", "success");
-    form.reset();
-    dateInput.min = new Date().toISOString().split("T")[0];
-
-    window.setTimeout(() => {
-      window.location.href = buildBookingWhatsAppUrl(booking);
-    }, 1000);
-  } catch (error) {
-    console.error("Erro ao salvar agendamento:", error);
-    showMessage("Não foi possível salvar. Confira as chaves e a política RLS do Supabase.", "error");
-  } finally {
-    submitButton.disabled = false;
-    submitButton.textContent = "Confirmar Agendamento";
-  }
-});
-
 if ("IntersectionObserver" in window) {
   const observer = new IntersectionObserver(
     (entries) => {
@@ -160,46 +118,8 @@ function ensureServiceOption(serviceName) {
   serviceSelect.append(new Option(serviceName, serviceName));
 }
 
-function getBookingData() {
-  const formData = new FormData(form);
-  return {
-    nome_cliente: String(formData.get("nome_cliente")).trim(),
-    telefone: String(formData.get("telefone")).trim(),
-    servico: String(formData.get("servico")).trim(),
-    data: String(formData.get("data")).trim(),
-    horario: String(formData.get("horario")).trim(),
-    observacoes: String(formData.get("observacoes")).trim(),
-  };
-}
-
-function buildBookingWhatsAppUrl(booking) {
-  const message = [
-    "Olá!",
-    "Gostaria de confirmar meu agendamento.",
-    "",
-    "Nome:",
-    booking.nome_cliente,
-    "",
-    "Serviço:",
-    booking.servico,
-    "",
-    "Data:",
-    formatDate(booking.data),
-    "",
-    "Horário:",
-    booking.horario,
-  ].join("\n");
-
-  return buildPlainWhatsAppUrl(message);
-}
-
 function buildPlainWhatsAppUrl(message) {
   return `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent(message)}`;
-}
-
-function formatDate(dateValue) {
-  const [year, month, day] = dateValue.split("-");
-  return `${day}/${month}/${year}`;
 }
 
 function openModal(modal) {
@@ -212,12 +132,4 @@ function closeModal(modal) {
   modal.setAttribute("aria-hidden", "true");
 }
 
-function showMessage(message, type) {
-  formMessage.textContent = message;
-  formMessage.className = `form-message ${type}`;
-}
-
-function clearMessage() {
-  formMessage.textContent = "";
-  formMessage.className = "form-message";
-}
+window.PixelBraidWhatsApp = { buildPlainWhatsAppUrl };

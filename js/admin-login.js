@@ -6,7 +6,7 @@ const adminLoginButton = document.querySelector("#adminLoginButton");
 const adminPanelUrl = new URL("../admin.html", window.location.href);
 
 if (!loginClient) {
-  showLoginMessage("Configure SUPABASE_URL e SUPABASE_ANON_KEY antes de acessar o painel.", "error");
+  showLoginMessage(window.PixelBraidConfig?.supabaseMessage || "Supabase ainda não foi configurado.", "error");
   adminLoginButton.disabled = true;
 } else {
   initAdminLogin();

@@ -15,6 +15,7 @@ Site estático em HTML, CSS e JavaScript puro para um salão de tranças com est
 ├── js/
 │   ├── app.js
 │   ├── admin.js
+│   ├── agendamento.js
 │   ├── catalogo.js
 │   └── supabase.js
 ├── assets/
@@ -111,15 +112,15 @@ No Supabase, vá em `Project Settings > API` e copie:
 - `Project URL`
 - `anon public`
 
-Para teste local sem build, edite `js/supabase.js`:
+Crie um arquivo `.env` local a partir de `.env.example`:
 
-```js
-const SUPABASE_URL = "COLE_AQUI_A_URL_DO_SUPABASE";
-const SUPABASE_ANON_KEY = "COLE_AQUI_A_CHAVE_ANON_PUBLIC";
-const WHATSAPP_NUMBER = "5511999999999";
+```text
+SUPABASE_URL=https://seu-projeto.supabase.co
+SUPABASE_ANON_KEY=sua-chave-anon-public
+WHATSAPP_NUMBER=5511999999999
 ```
 
-Use o WhatsApp no formato internacional, apenas números. Nunca use a `service_role key` no front-end.
+Use o WhatsApp no formato internacional, apenas números. Nunca use a `service_role key` no front-end. O arquivo `.env` fica fora do Git.
 
 ## Variáveis na Vercel
 
@@ -153,15 +154,14 @@ Admin local:
 http://localhost:3000/admin/login.html
 ```
 
-Com Node instalado, você também pode testar igual à Vercel:
+Para testar com Supabase localmente, rode o build e sirva a pasta `dist`:
 
 ```bash
-$env:SUPABASE_URL="https://xxxxxxxx.supabase.co"
-$env:SUPABASE_ANON_KEY="sua-chave-anon-public"
-$env:WHATSAPP_NUMBER="5511999999999"
 npm run build
 python -m http.server 3000 -d dist
 ```
+
+Sem variáveis configuradas, o site público continua funcionando com fallback do catálogo. O painel exibe: `Supabase ainda não foi configurado. Adicione SUPABASE_URL e SUPABASE_ANON_KEY para utilizar o painel administrativo.`
 
 ## Como testar o agendamento
 
