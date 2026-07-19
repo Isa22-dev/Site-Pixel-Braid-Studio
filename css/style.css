@@ -1068,6 +1068,12 @@ input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 4px rgba(255, 98, 
   padding: clamp(18px, 4vw, 42px);
 }
 
+.admin-login-shell {
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+}
+
 .admin-panel {
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.78);
@@ -1091,6 +1097,39 @@ input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 4px rgba(255, 98, 
 .admin-dashboard {
   display: grid;
   gap: 24px;
+}
+
+.admin-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px;
+}
+
+.admin-menu a,
+.admin-menu button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border: 1px solid rgba(82, 33, 150, 0.16);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 900;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.admin-menu a.is-active,
+.admin-menu a:hover,
+.admin-menu a:focus-visible,
+.admin-menu button:hover,
+.admin-menu button:focus-visible {
+  color: var(--white);
+  background: linear-gradient(135deg, var(--header), var(--pink));
 }
 
 .admin-topbar {
@@ -1248,6 +1287,30 @@ input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 4px rgba(255, 98, 
   background: rgba(82, 33, 150, 0.12);
 }
 
+.admin-booking-item,
+.admin-placeholder {
+  padding: clamp(18px, 3vw, 28px);
+}
+
+.admin-booking-item {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(82, 33, 150, 0.14);
+  border-radius: 16px;
+}
+
+.admin-booking-item h3,
+.admin-placeholder h2 {
+  margin: 8px 0;
+  color: var(--ink);
+}
+
+.admin-booking-item p,
+.admin-placeholder p:not(.eyebrow) {
+  margin: 6px 0 0;
+  color: rgba(39, 16, 79, 0.74);
+  line-height: 1.55;
+}
+
 .section-reveal, .reveal-card { opacity: 0; transform: translateY(22px); transition: opacity 680ms ease, transform 680ms ease; }
 .section-reveal.is-visible, .reveal-card.is-visible { opacity: 1; transform: translateY(0); }
 
@@ -1343,24 +1406,46 @@ input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 4px rgba(255, 98, 
 }
 
 @media (max-width: 767px) {
-  .catalog-section {
+  .catalog-section,
+  .catalogo,
+  #catalogo {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    overflow: visible !important;
     width: 100%;
     max-width: 100%;
     padding-right: 16px;
     padding-left: 16px;
+    transform: none !important;
   }
 
-  .catalog-grid {
-    grid-template-columns: 1fr;
-    gap: 22px;
-    width: 100%;
-    max-width: 100%;
+  .catalog-grid,
+  .catalog-feed,
+  .catalog-list {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
   }
 
-  .catalog-card {
-    width: 100%;
-    max-width: 420px;
-    margin-inline: auto;
+  .catalog-card,
+  .service-card,
+  .instagram-card,
+  .insta-card {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    position: relative !important;
+    transform: none !important;
+    overflow: visible !important;
   }
 
   .catalog-card .post-media,
@@ -1370,17 +1455,23 @@ input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 4px rgba(255, 98, 
     aspect-ratio: 4 / 5;
   }
 
+  .catalog-card img,
   .catalog-card .post-media img,
+  .service-card img,
+  .instagram-card img,
+  .insta-card img,
   .post-media img {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    object-fit: cover;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 260px !important;
+    max-width: 100% !important;
+    object-fit: cover !important;
   }
 
   .catalog-card > img {
     aspect-ratio: 4 / 5;
-    height: auto;
+    height: auto !important;
   }
 
   .catalog-card button {

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#CD2382" />
+    <meta name="robots" content="noindex, nofollow" />
     <title>Admin | Pixel Braid Studio</title>
     <link rel="icon" href="assets/icones/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,25 +26,10 @@
     </div>
 
     <main class="admin-shell">
-      <section class="admin-login admin-panel" id="loginPanel">
-        <a class="brand brand-logo admin-brand" href="index.html" aria-label="Pixel Braid Studio"><span class="brand-pixel-p">P</span><span class="brand-word"><span><span class="brand-modern">ixel</span></span><span class="brand-premium">Braid Studio</span></span></a>
-        <div class="admin-heading">
-          <p class="eyebrow">Painel administrativo</p>
-          <h1>Entrar no catálogo</h1>
-          <p>Use seu usuário do Supabase Auth para gerenciar modelos, imagens e valores.</p>
-        </div>
-        <form class="admin-form" id="loginForm">
-          <label>E-mail<input id="adminEmail" type="email" autocomplete="email" required /></label>
-          <label>Senha<input id="adminPassword" type="password" autocomplete="current-password" required /></label>
-          <p class="form-message" id="loginMessage" role="status" aria-live="polite"></p>
-          <button class="button button-primary" type="submit">Entrar</button>
-        </form>
-      </section>
-
       <section class="admin-dashboard" id="adminDashboard" hidden>
         <header class="admin-topbar admin-panel">
           <div>
-            <p class="eyebrow">Catálogo editável</p>
+            <p class="eyebrow">Olá, Administrador</p>
             <h1>Pixel Braid Studio</h1>
           </div>
           <div class="admin-actions">
@@ -51,6 +37,14 @@
             <button class="button button-primary" id="logoutButton" type="button">Sair</button>
           </div>
         </header>
+
+        <nav class="admin-menu admin-panel" aria-label="Menu administrativo">
+          <a class="is-active" href="#catalogo-admin">Catálogo</a>
+          <a href="#planos-admin">Planos por Assinatura</a>
+          <a href="#agendamentos-admin">Agendamentos</a>
+          <a href="#configuracoes-admin">Configurações</a>
+          <button id="menuLogoutButton" type="button">Sair</button>
+        </nav>
 
         <div class="admin-layout">
           <form class="admin-form admin-panel" id="catalogForm">
@@ -79,11 +73,31 @@
           <section class="admin-panel catalog-manager">
             <div class="admin-heading">
               <p class="eyebrow">Itens cadastrados</p>
-              <h2>Catálogo</h2>
+              <h2 id="catalogo-admin">Catálogo</h2>
             </div>
             <div class="admin-list" id="adminCatalogList" aria-live="polite"></div>
           </section>
         </div>
+
+        <section class="admin-panel admin-placeholder" id="planos-admin">
+          <p class="eyebrow">Planos por Assinatura</p>
+          <h2>Gestão de planos</h2>
+          <p>Área reservada para edição dos planos Bronze, Ouro e Diamante.</p>
+        </section>
+
+        <section class="admin-panel catalog-manager" id="agendamentos-admin">
+          <div class="admin-heading">
+            <p class="eyebrow">Agendamentos</p>
+            <h2>Pedidos recebidos</h2>
+          </div>
+          <div class="admin-list" id="adminBookingList" aria-live="polite"></div>
+        </section>
+
+        <section class="admin-panel admin-placeholder" id="configuracoes-admin">
+          <p class="eyebrow">Configurações</p>
+          <h2>Preferências do painel</h2>
+          <p>Novos administradores devem ser criados em Supabase Authentication, sem alterar o código do site.</p>
+        </section>
       </section>
     </main>
   </body>

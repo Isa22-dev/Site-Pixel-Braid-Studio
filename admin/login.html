@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#CD2382" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Login Admin | Pixel Braid Studio</title>
+    <link rel="icon" href="../assets/icones/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="../js/supabase.js"></script>
+    <script defer src="../js/admin-login.js"></script>
+  </head>
+  <body class="admin-page admin-login-page">
+    <div class="magic-bg" aria-hidden="true">
+      <span class="bg-sprite bg-heart s1"></span>
+      <span class="bg-sprite bg-star s2"></span>
+      <span class="bg-sprite bg-pixel s3"></span>
+      <span class="bg-sprite bg-crystal s4"></span>
+      <span class="bg-sprite bg-spark s5"></span>
+      <span class="bg-sprite bg-block s7"></span>
+    </div>
+
+    <main class="admin-shell admin-login-shell">
+      <section class="admin-login admin-panel">
+        <a class="brand brand-logo admin-brand" href="../index.html" aria-label="Pixel Braid Studio"><span class="brand-pixel-p">P</span><span class="brand-word"><span><span class="brand-modern">ixel</span></span><span class="brand-premium">Braid Studio</span></span></a>
+        <div class="admin-heading">
+          <p class="eyebrow">Painel administrativo</p>
+          <h1>Entrar</h1>
+          <p>Acesse com o usuário cadastrado no Supabase Auth para gerenciar o Pixel Braid Studio.</p>
+        </div>
+        <form class="admin-form" id="adminLoginForm">
+          <label>E-mail<input id="adminEmail" type="email" autocomplete="email" required /></label>
+          <label>Senha<input id="adminPassword" type="password" autocomplete="current-password" required /></label>
+          <p class="form-message" id="adminLoginMessage" role="status" aria-live="polite"></p>
+          <button class="button button-primary" id="adminLoginButton" type="submit">Entrar</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

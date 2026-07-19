@@ -8,6 +8,8 @@ Site estático em HTML, CSS e JavaScript puro para um salão de tranças com est
 /
 ├── index.html
 ├── admin.html
+├── admin/
+│   └── login.html
 ├── css/
 │   └── style.css
 ├── js/
@@ -50,9 +52,10 @@ Ele também ativa RLS e recria a política de insert para a chave pública `anon
 O mesmo SQL também cria:
 
 - `public.catalogo_trancas`, usada pelo catálogo editável.
+- `public.admin_users`, uma allowlist de e-mails administradores.
 - Bucket público `catalogo` no Supabase Storage.
 - Políticas RLS para clientes visualizarem somente tranças ativas.
-- Políticas RLS para usuários autenticados criarem, editarem e excluírem itens.
+- Políticas RLS para somente administradores autorizados criarem, editarem e excluírem itens.
 - Seis itens iniciais do catálogo: Box Braids Longas, Knotless Braids, Goddess Braids, Nagô, Twists e Fulani Braids.
 
 Campos da tabela `catalogo_trancas`:
@@ -74,15 +77,20 @@ created_at
 O painel fica em:
 
 ```text
-/admin.html
+/admin/login.html
 ```
 
 Para criar o usuário administrador:
 
 1. No Supabase, abra `Authentication > Users`.
 2. Clique em `Add user`.
-3. Informe e-mail e senha.
-4. Use esse login em `admin.html`.
+3. Crie o usuário `admin@pixelbraidstudio.com` e defina a senha inicial no próprio Supabase.
+4. Confirme que o e-mail também existe em `Table Editor > admin_users`.
+5. Use esse login em `/admin/login.html`.
+
+O painel protegido fica em `/admin.html`. Se não houver sessão ativa do Supabase Auth, o usuário é redirecionado automaticamente para `/admin/login.html`.
+
+Para adicionar novos administradores futuramente, crie o usuário em `Authentication > Users` e adicione o e-mail em `admin_users`, sem alterar o código do site.
 
 No painel você pode:
 
@@ -92,8 +100,9 @@ No painel você pode:
 - Usar uma imagem por URL.
 - Ativar/desativar item do catálogo público.
 - Excluir item.
+- Visualizar agendamentos recebidos.
 
-Clientes não acessam o painel sem login. A página pública busca somente registros com `ativo = true`.
+Clientes não acessam o painel sem login. A página pública busca somente registros com `ativo = true`, e o link do painel não é exibido no site público.
 
 ## Chaves
 
@@ -141,7 +150,7 @@ http://localhost:3000
 Admin local:
 
 ```text
-http://localhost:3000/admin.html
+http://localhost:3000/admin/login.html
 ```
 
 Com Node instalado, você também pode testar igual à Vercel:
@@ -175,7 +184,7 @@ order by created_at desc;
 1. Rode o SQL de `supabase.sql` no Supabase.
 2. Crie um usuário em `Authentication > Users`.
 3. Configure `SUPABASE_URL` e `SUPABASE_ANON_KEY`.
-4. Abra `/admin.html` e faça login.
+4. Abra `/admin/login.html` e faça login.
 5. Cadastre ou edite uma trança.
 6. Abra `/index.html`.
 7. Confira se o card aparece com o mesmo layout estilo Instagram.

@@ -1,15 +1,15 @@
 const adminClient = window.PixelBraidConfig?.supabaseClient;
-const loginPanel = document.querySelector("#loginPanel");
-const loginForm = document.querySelector("#loginForm");
-const loginMessage = document.querySelector("#loginMessage");
 const adminDashboard = document.querySelector("#adminDashboard");
 const logoutButton = document.querySelector("#logoutButton");
+const menuLogoutButton = document.querySelector("#menuLogoutButton");
 const catalogForm = document.querySelector("#catalogForm");
 const catalogList = document.querySelector("#adminCatalogList");
+const bookingList = document.querySelector("#adminBookingList");
 const catalogMessage = document.querySelector("#catalogMessage");
 const formTitle = document.querySelector("#formTitle");
 const clearFormButton = document.querySelector("#clearFormButton");
 const saveCatalogButton = document.querySelector("#saveCatalogButton");
+const adminLoginUrl = new URL("admin/login.html", window.location.href);
 
 const fields = {
   id: document.querySelector("#catalogId"),
@@ -24,49 +24,54 @@ const fields = {
 };
 
 if (!adminClient) {
-  showAdminMessage(loginMessage, "Configure SUPABASE_URL e SUPABASE_ANON_KEY antes de usar o painel.", "error");
+  window.location.replace(adminLoginUrl.href);
 } else {
   initAdmin();
 }
 
 async function initAdmin() {
-  const { data } = await adminClient.auth.getSession();
-  setAuthState(Boolean(data.session));
+  const { data, error } = await adminClient.auth.getSession();
+  if (error || !data.session || !(await isAuthorizedAdmin())) {
+    await adminClient.auth.signOut();
+    redirectToLogin();
+    return;
+  }
+
+  setAuthState(true);
 
   adminClient.auth.onAuthStateChange((_event, session) => {
-    setAuthState(Boolean(session));
+    if (!session) redirectToLogin();
   });
 
-  loginForm.addEventListener("submit", handleLogin);
-  logoutButton.addEventListener("click", () => adminClient.auth.signOut());
+  logoutButton.addEventListener("click", handleLogout);
+  menuLogoutButton.addEventListener("click", handleLogout);
   catalogForm.addEventListener("submit", handleSaveCatalogItem);
   clearFormButton.addEventListener("click", resetCatalogForm);
   catalogList.addEventListener("click", handleCatalogListAction);
 }
 
-async function handleLogin(event) {
-  event.preventDefault();
-  showAdminMessage(loginMessage, "", "");
-
-  const email = document.querySelector("#adminEmail").value.trim();
-  const password = document.querySelector("#adminPassword").value;
-
-  const { error } = await adminClient.auth.signInWithPassword({ email, password });
-  if (error) {
-    showAdminMessage(loginMessage, "Login não autorizado. Confira e-mail, senha e usuário criado no Supabase Auth.", "error");
-    return;
-  }
-
-  loginForm.reset();
+async function isAuthorizedAdmin() {
+  const { data, error } = await adminClient.rpc("is_admin");
+  return !error && data === true;
 }
 
 async function setAuthState(isAuthenticated) {
-  loginPanel.hidden = isAuthenticated;
   adminDashboard.hidden = !isAuthenticated;
 
   if (isAuthenticated) {
     await loadAdminCatalog();
+    await loadAdminBookings();
   }
+}
+
+async function handleLogout() {
+  await adminClient.auth.signOut();
+  clearSupabaseSessionStorage();
+  redirectToLogin();
+}
+
+function redirectToLogin() {
+  window.location.replace(adminLoginUrl.href);
 }
 
 async function loadAdminCatalog() {
@@ -88,6 +93,51 @@ async function loadAdminCatalog() {
   }
 
   catalogList.innerHTML = data.map(createAdminCatalogItem).join("");
+}
+
+async function loadAdminBookings() {
+  if (!bookingList) return;
+
+  bookingList.innerHTML = '<p class="admin-empty">Carregando agendamentos...</p>';
+
+  const { data, error } = await adminClient
+    .from("agendamentos")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  if (error) {
+    bookingList.innerHTML = '<p class="admin-empty">Não foi possível carregar agendamentos. Confira as políticas RLS.</p>';
+    return;
+  }
+
+  if (!data.length) {
+    bookingList.innerHTML = '<p class="admin-empty">Nenhum agendamento recebido ainda.</p>';
+    return;
+  }
+
+  bookingList.innerHTML = data.map(createAdminBookingItem).join("");
+}
+
+function createAdminBookingItem(item) {
+  const clientName = escapeHtml(item.nome_cliente);
+  const phone = escapeHtml(item.telefone);
+  const service = escapeHtml(item.servico);
+  const date = escapeHtml(formatDate(item.data));
+  const time = escapeHtml(item.horario?.slice(0, 5) || "");
+  const notes = escapeHtml(item.observacoes || "Sem observações.");
+
+  return `
+    <article class="admin-booking-item">
+      <div>
+        <span class="admin-status">${date} às ${time}</span>
+        <h3>${clientName}</h3>
+        <p>${service}</p>
+        <p>${phone}</p>
+        <p>${notes}</p>
+      </div>
+    </article>
+  `;
 }
 
 function createAdminCatalogItem(item) {
@@ -241,6 +291,20 @@ function resetCatalogForm() {
 function showAdminMessage(element, message, type) {
   element.textContent = message;
   element.className = type ? `form-message ${type}` : "form-message";
+}
+
+function clearSupabaseSessionStorage() {
+  [localStorage, sessionStorage].forEach((storage) => {
+    Object.keys(storage)
+      .filter((key) => key.startsWith("sb-") && key.includes("auth-token"))
+      .forEach((key) => storage.removeItem(key));
+  });
+}
+
+function formatDate(dateValue) {
+  if (!dateValue) return "Data pendente";
+  const [year, month, day] = dateValue.split("-");
+  return `${day}/${month}/${year}`;
 }
 
 function escapeHtml(value) {

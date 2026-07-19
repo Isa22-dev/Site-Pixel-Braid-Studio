@@ -122,25 +122,36 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.18 },
-);
+if ("IntersectionObserver" in window) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.08, rootMargin: "0px 0px -8% 0px" },
+  );
 
-document.querySelectorAll(".section-reveal, .reveal-card").forEach((element) => observer.observe(element));
+  document.querySelectorAll(".section-reveal, .reveal-card").forEach((element) => observer.observe(element));
 
-window.PixelBraidReveal = {
-  observe(element) {
-    observer.observe(element);
-  },
-};
+  window.PixelBraidReveal = {
+    observe(element) {
+      element.classList.add("is-visible");
+      observer.observe(element);
+    },
+  };
+} else {
+  document.querySelectorAll(".section-reveal, .reveal-card").forEach((element) => element.classList.add("is-visible"));
+
+  window.PixelBraidReveal = {
+    observe(element) {
+      element.classList.add("is-visible");
+    },
+  };
+}
 
 function ensureServiceOption(serviceName) {
   const exists = Array.from(serviceSelect.options).some((option) => option.value === serviceName);

@@ -8,12 +8,16 @@ const catalogIcons = `
 `;
 
 if (catalogGrid) {
+  revealCatalogCards();
   loadPublicCatalog();
 }
 
 async function loadPublicCatalog() {
   const client = window.PixelBraidConfig?.supabaseClient;
-  if (!client) return;
+  if (!client) {
+    restoreFallbackCatalog();
+    return;
+  }
 
   try {
     const { data, error } = await client
@@ -23,18 +27,22 @@ async function loadPublicCatalog() {
       .order("created_at", { ascending: true });
 
     if (error) throw error;
-    if (!data?.length) return;
+    if (!data?.length) {
+      restoreFallbackCatalog();
+      return;
+    }
 
     renderCatalog(data);
     syncBookingServices(data);
   } catch (error) {
     console.error("Erro ao carregar catálogo:", error);
-    catalogGrid.innerHTML = catalogFallbackCards;
+    restoreFallbackCatalog();
   }
 }
 
 function renderCatalog(items) {
   catalogGrid.innerHTML = items.map(createCatalogCard).join("");
+  revealCatalogCards();
 
   catalogGrid.querySelectorAll(".reveal-card").forEach((card) => {
     if (window.PixelBraidReveal) {
@@ -42,6 +50,26 @@ function renderCatalog(items) {
     } else {
       card.classList.add("is-visible");
     }
+  });
+}
+
+function restoreFallbackCatalog() {
+  if (!catalogGrid.innerHTML.trim()) {
+    catalogGrid.innerHTML = catalogFallbackCards;
+  }
+
+  revealCatalogCards();
+}
+
+function revealCatalogCards() {
+  const catalogSection = document.querySelector("#catalogo");
+  catalogSection?.classList.add("is-visible");
+  catalogSection?.classList.remove("hidden");
+
+  catalogGrid?.querySelectorAll(".reveal-card").forEach((card) => {
+    card.classList.add("is-visible");
+    card.classList.remove("hidden");
+    card.hidden = false;
   });
 }
 
